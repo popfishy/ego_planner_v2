@@ -6,11 +6,14 @@
 #include <visualization_msgs/Marker.h>
 #include <ros/ros.h>
 
+// TODO 仿照XTDrone添加pose_cmd_pub功能
 using namespace Eigen;
 
 ros::Publisher pos_cmd_pub;
+ros::Publisher pose_cmd_pub;
 
 quadrotor_msgs::PositionCommand cmd;
+geometry_msgs::Pose pose_cmd;
 // double pos_gain[3] = {0, 0, 0};
 // double vel_gain[3] = {0, 0, 0};
 
@@ -160,6 +163,21 @@ void publish_cmd(Vector3d p, Vector3d v, Vector3d a, Vector3d j, double y, doubl
   last_pos_ = p;
 }
 
+// TODO yjq add
+void publish_pose_cmd(Vector3d p, Vector3d v, Vector3d a, Vector3d j, double y, double yd)
+{
+  pose_cmd.position.x = p(0);
+  pose_cmd.position.y = p(1);
+  pose_cmd.position.z = p(2);
+
+  pose_cmd.orientation.x = 0.0; 
+  pose_cmd.orientation.y = 0.0;
+  pose_cmd.orientation.z = sin(yd/2);
+  pose_cmd.orientation.w = cos(yd/2);
+
+  pose_cmd_pub.publish(pose_cmd);
+}
+
 void cmdCallback(const ros::TimerEvent &e)
 {
   /* no publishing before receive traj_ and have heartbeat */
@@ -168,6 +186,7 @@ void cmdCallback(const ros::TimerEvent &e)
     // ROS_ERROR_ONCE("[traj_server] No heartbeat from the planner received");
     return;
   }
+  
   if (!receive_traj_)
     return;
 
@@ -179,6 +198,7 @@ void cmdCallback(const ros::TimerEvent &e)
 
     receive_traj_ = false;
     publish_cmd(last_pos_, Vector3d::Zero(), Vector3d::Zero(), Vector3d::Zero(), last_yaw_, 0);
+    publish_pose_cmd(last_pos_, Vector3d::Zero(), Vector3d::Zero(), Vector3d::Zero(), last_yaw_, 0);
   }
 
   double t_cur = (time_now - start_time_).toSec();
@@ -212,9 +232,10 @@ void cmdCallback(const ros::TimerEvent &e)
       slowly_flip_yaw_target_ += 2 * M_PI;
     constexpr double CENTER[2] = {0.0, 0.0};
     slowly_turn_to_center_target_ = atan2(CENTER[1] - pos(1), CENTER[0] - pos(0));
-
+    
     // publish
     publish_cmd(pos, vel, acc, jer, yaw_yawdot.first, yaw_yawdot.second);
+    publish_pose_cmd(pos, vel, acc, jer, yaw_yawdot.first, yaw_yawdot.second);
 #if FLIP_YAW_AT_END or TURN_YAW_TO_CENTER_AT_END
     finished = false;
 #endif
@@ -255,6 +276,7 @@ void cmdCallback(const ros::TimerEvent &e)
     time_last = time_now;
 
     publish_cmd(pos, vel, acc, jer, yaw_yawdot.first, yaw_yawdot.second);
+    publish_pose_cmd(pos, vel, acc, jer, yaw_yawdot.first, yaw_yawdot.second);
   }
 #endif
 
@@ -304,6 +326,7 @@ void cmdCallback(const ros::TimerEvent &e)
     time_last = time_now;
 
     publish_cmd(pos, vel, acc, jer, yaw_yawdot.first, yaw_yawdot.second);
+    publish_pose_cmd(pos, vel, acc, jer, yaw_yawdot.first, yaw_yawdot.second);
   }
 #endif
 }
@@ -318,6 +341,7 @@ int main(int argc, char **argv)
   ros::Subscriber heartbeat_sub = nh.subscribe("heartbeat", 10, heartbeatCallback);
 
   pos_cmd_pub = nh.advertise<quadrotor_msgs::PositionCommand>("/position_cmd", 50);
+  pose_cmd_pub = nh.advertise<geometry_msgs::Pose>("/pose_cmd", 50);
 
   ros::Timer cmd_timer = nh.createTimer(ros::Duration(0.01), cmdCallback);
 
