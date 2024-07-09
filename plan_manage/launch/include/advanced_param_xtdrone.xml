@@ -96,6 +96,7 @@
     <param name="grid_map/local_update_range_x"  value="5.5" /> 
     <param name="grid_map/local_update_range_y"  value="5.5" /> 
     <param name="grid_map/local_update_range_z"  value="4.5" /> <!-- different meaning between grid_map.cpp and grid_map_bigmap.cpp -->
+    <!-- TODO 0.2->0.4 -->
     <param name="grid_map/obstacles_inflation"     value="0.2" /> 
     <param name="grid_map/local_map_margin" value="10"/>
     <param name="grid_map/enable_virtual_wall" value="true"/>
@@ -154,7 +155,7 @@
     <param name="optimization/weight_time" value="10.0" type="double"/>
     <param name="optimization/obstacle_clearance" value="0.1" type="double"/>
     <param name="optimization/obstacle_clearance_soft" value="0.5" type="double"/>
-    <param name="optimization/swarm_clearance" value="0.15000000000000002" type="double"/> <!-- heterogeneous support: my required clearance -->
+    <param name="optimization/swarm_clearance" value="0.3" type="double"/> <!-- heterogeneous support: my required clearance 0.15000000000000002-->
     <param name="optimization/max_vel" value="$(arg max_vel)" type="double"/>
     <param name="optimization/max_acc" value="$(arg max_acc)" type="double"/>
     <param name="optimization/max_jer" value="$(arg max_jer)" type="double"/>

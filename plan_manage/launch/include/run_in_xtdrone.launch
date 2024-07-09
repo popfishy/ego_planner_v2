@@ -95,7 +95,7 @@
 
   <!-- trajectory server -->
   <node pkg="ego_planner" name="iris_$(arg drone_id)_traj_server" type="traj_server" output="screen">
-    <remap from="position_cmd" to="/xtdrone/iris_$(arg drone_id)/planning/pos_cmd"/>
+    <remap from="position_cmd" to="/xtdrone/iris_$(arg drone_id)_planning/pos_cmd"/>
     <!-- TODO 查一下哪里加了pose_cmd -->
     <remap from="pose_cmd" to="/xtdrone/iris_$(arg drone_id)/cmd_pose_enu"/>
     <remap from="~planning/trajectory" to="/xtdrone/iris_$(arg drone_id)_planning/trajectory"/>
