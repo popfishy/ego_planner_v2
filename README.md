@@ -12,10 +12,10 @@
 
 ![params](assets/params.png)
 
-​	集群版本对应效果，==具体视频见assets文件夹中==：
+​	集群版本对应效果，具体视频见assets文件夹中：
 
 ![swarm](assets/swarm.png)
 
-​	编队版本对应效果，视频效果与上述类似，==具体视频同样见assets文件夹中==：
+​	编队版本对应效果，视频效果与上述类似，具体视频同样见assets文件夹中：
 
 ![formation](assets/formation.png)
