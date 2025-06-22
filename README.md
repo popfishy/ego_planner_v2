@@ -1,11 +1,3 @@
-<!--
- * @Author: popfishy 1301350150@qq.com
- * @Date: 2025-03-27 19:26:56
- * @LastEditors: popfishy 1301350150@qq.com
- * @LastEditTime: 2025-03-27 19:32:25
- * @FilePath: /src/ego_planner_v2/README.md
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 ## EGO-SWARM2移植到XTdrone平台
 
 #### 一、EGO-SWARM1
